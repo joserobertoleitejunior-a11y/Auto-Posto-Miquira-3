@@ -28,12 +28,11 @@
             transition: all 0.8s cubic-bezier(0.9, 0, 0.1, 1);
         }
         .shell-giant { width: 180px; filter: drop-shadow(0 0 20px rgba(251, 206, 7, 0.4)); animation: pulse 2s infinite ease-in-out; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         
         .wrapper { height: 100vh; width: 100%; display: flex; flex-direction: column; transition: transform 0.7s cubic-bezier(0.6, 0, 0.4, 1); }
         section { min-height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
 
-        .card { background: rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 25px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 380px; }
+        .card { background: rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 25px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 380px; position: relative; }
         h2 { font-family: 'Oswald'; font-size: 2.8rem; color: var(--ferrari-red); margin-bottom: 10px; text-transform: uppercase; }
 
         .price-table { width: 100%; margin: 15px 0; border-collapse: collapse; }
@@ -53,24 +52,15 @@
             background: linear-gradient(-45deg, #000 5px, transparent 0), linear-gradient(45deg, #000 5px, transparent 0);
             background-size: 10px 10px;
         }
-        .ticket-header { border-bottom: 2px dashed #000; padding-bottom: 10px; margin-bottom: 15px; }
-        .ticket-main { font-weight: 900; font-size: 1.5rem; margin: 15px 0; border: 2px solid #000; padding: 10px; }
+
+        /* MAPA TOTALMENTE ESTÁTICO E CRAVADO */
+        .map-container { width: 100%; height: 220px; margin-top: 15px; position: relative; border-radius: 15px; overflow: hidden; border: 2px solid var(--ferrari-red); }
+        .map-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: transparent; }
+        #map-box { width: 100%; height: 100%; border: none; }
 
         .thanks-page { background: #fff; color: #000; }
-        
         .nav-buttons { position: fixed; bottom: 25px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 12px; }
-        .nav-btn { width: 55px; height: 55px; border-radius: 50%; background: var(--ferrari-red); color: white; border: none; font-size: 1.4rem; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-
-        #map-box { 
-            width: 100%; 
-            height: 220px; 
-            border-radius: 15px; 
-            border: 2px solid var(--ferrari-red); 
-            margin-top: 15px;
-            background: #222;
-            /* MAPA FIXO: CANCELA O TOQUE */
-            pointer-events: none;
-        }
+        .nav-btn { width: 55px; height: 55px; border-radius: 50%; background: var(--ferrari-red); color: white; border: none; font-size: 1.4rem; }
     </style>
 </head>
 <body>
@@ -104,15 +94,11 @@
                     <tr><td>Etanol Comum</td><td class="price-val">R$ 4,89</td></tr>
                     <tr><td>Diesel S10</td><td class="price-val">R$ 6,79</td></tr>
                 </table>
-                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; font-size: 0.8rem; text-align: left;">
-                    <p><i class="fab fa-uber"></i> <b>Uber:</b> Descontos exclusivos para parceiros.</p>
-                    <p style="margin-top:5px;"><i class="fas fa-mobile-alt"></i> <b>Shell Box:</b> Desconto em todos os abastecimentos!</p>
-                </div>
             </div>
         </section>
 
         <section class="select-page">
-            <div class="tag">VOCÊ CHEGOU AO SEU DESTINO</div>
+            <div class="tag">SHELL SELECT</div>
             <div class="card" style="background: rgba(0,0,0,0.3); border-color: var(--select-teal);">
                 <h2 style="color:white;">SHELL CAFÉ</h2>
                 <p>Ambiente exclusivo com pão quente e café premium.</p>
@@ -122,44 +108,28 @@
         <section>
             <h2 style="margin-bottom: 20px;">PROMOÇÃO</h2>
             <div class="ticket-paper">
-                <div class="ticket-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e8/Shell_logo.svg/1200px-Shell_logo.svg.png" height="30">
-                    <p style="font-size: 0.7rem; margin-top: 5px;">AUTO POSTO MIQUIRA III</p>
-                </div>
-                <p style="font-size: 0.9rem;">VALE 01</p>
-                <div class="ticket-main">DUCHA GRÁTIS</div>
-                <p style="font-size: 0.8rem;"><b>REQUISITO:</b><br>ABASTECIMENTO ACIMA R$ 100,00</p>
-                <p style="font-size: 0.7rem; margin-top: 15px; border-top: 1px dashed #000; padding-top: 10px;">VALIDADE: 07 DIAS</p>
+                <p style="font-family:'Courier New'; font-weight:bold;">VALE DUCHA</p>
+                <div style="border: 2px solid #000; margin: 10px 0; padding: 10px; font-weight: 900; font-size: 1.5rem;">DUCHA GRÁTIS</div>
+                <p style="font-size: 0.8rem;">ABASTECIMENTO ACIMA R$ 100,00</p>
             </div>
         </section>
 
         <section>
             <div class="card">
                 <h2>LOCALIZAÇÃO</h2>
-                <p>Av. 5 de Novembro, 900 – Itapetininga / SP</p>
-                <iframe id="map-box" 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3653.280145455808!2d-48.04825942385465!3d-23.59429716212518!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c5cc857140e691%3A0x2863574945417646!2sAv.%205%20de%20Novembro%2C%20900%20-%20Vila%20Rio%20Branco%2C%20Itapetininga%20-%20SP%2C%2018208-015!5e0!3m2!1spt-BR!2sbr!4v1705300000000!5m2!1spt-BR!2sbr" 
-                    allowfullscreen="" loading="lazy">
-                </iframe>
-            </div>
-        </section>
-
-        <section class="select-page">
-            <div class="tag">OPORTUNIDADE LOCAL</div>
-            <div class="card" style="background: rgba(0,0,0,0.3); border-color: var(--select-teal);">
-                <h2 style="color:white;">PUBLIQUE AQUI</h2>
-                <p>Divulgue sua marca, serviço ou promoção aqui no Miquira 3.</p>
-                <p style="margin-top:10px; font-size:0.9rem;">
-                    📞 Fale com a gerência<br>
-                    📍 Exibição em TV, celular e QR Code
-                </p>
+                <p>Av. 5 de Novembro, 900 - Itapetininga</p>
+                <div class="map-container">
+                    <div class="map-overlay"></div>
+                    <iframe id="map-box" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.8875653491325!2d-48.06345382375939!3d-23.596230761962363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c3cbc662f33df5%3A0x9986763e4cd7272f!2sAuto%20Posto%20Miquira%203!5e0!3m2!1spt-BR!2sbr!4v1705388000000!5m2!1spt-BR!2sbr" 
+                        allowfullscreen="" loading="lazy"></iframe>
+                </div>
             </div>
         </section>
 
         <section class="thanks-page">
             <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e8/Shell_logo.svg/1200px-Shell_logo.svg.png" height="80">
             <h2 style="font-size: 3.5rem; margin-top:20px;">OBRIGADO!</h2>
-            <p style="font-size: 1.5rem; font-weight: 900;">VOLTE SEMPRE</p>
         </section>
     </div>
 
